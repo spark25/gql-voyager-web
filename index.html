@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <style>
@@ -30,11 +30,23 @@
     <div id="voyager">Loading...</div>
     <script type="module">
       const { voyagerIntrospectionQuery: query } = GraphQLVoyager;
-
-      const response = await fetch("../data/data.json");
+      const response = await fetch(
+        'https://swapi-graphql.netlify.app/.netlify/functions/index',
+        {
+          method: 'post',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+          credentials: 'omit',
+        },
+      );
       const introspection = await response.json();
-      
-      GraphQLVoyager.renderVoyager(document.getElementById("voyager"), {
+
+      console.log(introspection);
+      // Render <Voyager /> into the body.
+      GraphQLVoyager.renderVoyager(document.getElementById('voyager'), {
         introspection,
       });
     </script>
